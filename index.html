@@ -1,0 +1,582 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gửi Bé Phương Mai - Happy Birthday! ✨</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --accent: #ff8fab;
+            --bg: #fff5f8;
+            --text: #4a4e69;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            font-family: 'Quicksand', sans-serif;
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        /* --- MUSIC PLAYER --- */
+        .music-player {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: linear-gradient(135deg, #ffffff 0%, #fff5f8 100%);
+            padding: 16px 24px;
+            border-radius: 60px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            box-shadow: 0 15px 45px rgba(255, 143, 171, 0.25), 0 0 0 1px rgba(255, 200, 220, 0.5);
+            z-index: 1000;
+            border: 2px solid rgba(255, 150, 180, 0.6);
+            backdrop-filter: blur(10px);
+            max-width: 340px;
+        }
+        .music-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .music-info img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 3px solid var(--accent);
+            animation: rotate 3s linear infinite;
+            animation-play-state: paused;
+            box-shadow: 0 4px 12px rgba(255, 143, 171, 0.3);
+        }
+        @keyframes rotate { from {transform: rotate(0deg);} to {transform: rotate(360deg);} }
+
+        #songSelect {
+            border: 2px solid rgba(255, 143, 171, 0.4);
+            background: white;
+            font-family: 'Quicksand';
+            color: var(--text);
+            font-weight: 600;
+            outline: none;
+            cursor: pointer;
+            width: 210px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(255, 143, 171, 0.1);
+        }
+        #songSelect:hover {
+            border-color: var(--accent);
+            background: #fff9fb;
+            box-shadow: 0 6px 16px rgba(255, 143, 171, 0.2);
+        }
+        #songSelect:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(255, 143, 171, 0.15), 0 6px 16px rgba(255, 143, 171, 0.2);
+        }
+
+        .music-controls { 
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .music-button {
+            cursor: pointer;
+            border: 2px solid rgba(255, 143, 171, 0.5);
+            background: linear-gradient(135deg, #fff, #fff5f8);
+            color: var(--accent);
+            border-radius: 999px;
+            padding: 10px 16px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(255, 143, 171, 0.1);
+            white-space: nowrap;
+        }
+        .music-button:hover { 
+            background: linear-gradient(135deg, var(--accent), #ffb3d6);
+            color: white;
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 143, 171, 0.25);
+        }
+        .music-button:active {
+            transform: translateY(0px);
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 30px 20px 80px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            width: 420px;
+            height: 420px;
+            transform: translateX(-50%);
+            background: radial-gradient(circle, rgba(255,223,230,0.55), transparent 55%);
+            filter: blur(40px);
+            z-index: 0;
+        }
+        .main-photo {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            border: 6px solid white;
+            box-shadow: 0 8px 20px rgba(255, 143, 171, 0.3);
+            object-fit: cover;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        h1 { font-family: 'Dancing Script', cursive; font-size: 3.8rem; color: var(--accent); margin: 0; z-index: 1; }
+        .hero p { margin: 12px 0; z-index: 1; }
+        .hero .subline { color: #6f6a8a; opacity: 0.95; }
+
+        .section { 
+            padding: 60px 30px; 
+            max-width: 1100px; 
+            margin: 50px auto; 
+            position: relative;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 250, 252, 0.98));
+            border-radius: 32px;
+            box-shadow: 0 20px 50px rgba(255, 143, 171, 0.15);
+            border: 1px solid rgba(255, 200, 220, 0.4);
+        }
+        .section-title { 
+            text-align: center; 
+            font-family: 'Dancing Script', cursive; 
+            font-size: 2.8rem; 
+            margin-bottom: 50px; 
+            color: var(--accent);
+            text-shadow: 0 2px 4px rgba(255, 143, 171, 0.1);
+        }
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 28px;
+        }
+        .gallery-item {
+            background: white;
+            padding: 16px;
+            border-radius: 24px;
+            box-shadow: 0 12px 35px rgba(255, 143, 171, 0.2);
+            transition: 0.3s all ease;
+            text-align: center;
+            overflow: hidden;
+            border: 2px solid rgba(255, 200, 220, 0.3);
+        }
+        .gallery-item:hover { 
+            transform: translateY(-12px) rotate(1deg) scale(1.02); 
+            box-shadow: 0 18px 45px rgba(255, 143, 171, 0.3);
+            border: 2px solid rgba(255, 143, 171, 0.6);
+        }
+        .gallery-item img { width: 100%; height: 320px; object-fit: cover; border-radius: 18px; }
+
+        .timeline { 
+            position: relative; 
+            max-width: 800px; 
+            margin: 0 auto; 
+            padding: 40px 30px;
+            background: white;
+            border-radius: 28px;
+            box-shadow: 0 10px 30px rgba(255, 143, 171, 0.12);
+            border: 1px solid rgba(255, 200, 220, 0.3);
+        }
+        .timeline::after { content: ''; position: absolute; width: 3px; background: linear-gradient(180deg, var(--accent), rgba(255, 143, 171, 0.3)); top: 0; bottom: 0; left: 50%; opacity: 0.6; }
+        .timeline-item { 
+            padding: 25px 45px; 
+            position: relative; 
+            width: 50%; 
+            box-sizing: border-box;
+        }
+        .timeline-item::after { content: '💗'; position: absolute; right: -18px; top: 30px; background: var(--bg); z-index: 2; font-size: 1.4rem; }
+        .left { left: 0; text-align: right; }
+        .right { left: 50%; text-align: left; }
+        .right::after { left: -18px; right: auto; }
+        .timeline-item h4 { margin: 0 0 12px; color: #433d66; font-size: 1.1rem; }
+        .timeline-item p { margin: 0; line-height: 1.8; color: #6a6a7f; }
+
+        .gift-container { 
+            text-align: center; 
+            margin-top: 30px;
+            padding: 40px;
+            background: linear-gradient(135deg, rgba(255, 200, 220, 0.15), rgba(255, 220, 235, 0.1));
+            border-radius: 24px;
+            border: 2px dashed rgba(255, 143, 171, 0.4);
+        }
+        .box { 
+            font-size: 90px; 
+            cursor: pointer; 
+            transition: 0.4s all ease; 
+            display: inline-block;
+            filter: drop-shadow(0 8px 20px rgba(255, 143, 171, 0.2));
+        }
+        .box:hover { 
+            transform: scale(1.2) rotate(-5deg); 
+            filter: drop-shadow(0 12px 30px rgba(255, 143, 171, 0.35));
+        }
+        .gift-msg {
+            display: none;
+            margin-top: 40px;
+            padding: 40px;
+            background: linear-gradient(135deg, #fff9fb, #ffe8f0);
+            border-radius: 28px;
+            border: 2px solid var(--accent);
+            animation: fadeIn 0.6s;
+            text-align: left;
+            box-shadow: 0 15px 40px rgba(255, 143, 171, 0.25);
+        }
+        .gift-msg h3 {
+            color: var(--accent);
+            font-size: 1.4rem;
+            margin: 0 0 20px 0;
+        }
+        .gift-msg ul {
+            margin: 20px 0;
+            padding-left: 25px;
+        }
+        .gift-msg li {
+            margin: 12px 0;
+            line-height: 1.8;
+            color: #565a7a;
+        }
+        @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
+
+        .magic-btn {
+            border: none;
+            background: linear-gradient(135deg, #ff92b3 0%, #ffcae3 100%);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1rem;
+            box-shadow: 0 15px 35px rgba(255, 130, 175, 0.35);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .magic-btn:hover { 
+            transform: translateY(-4px); 
+            box-shadow: 0 20px 45px rgba(255, 130, 175, 0.45);
+            background: linear-gradient(135deg, #ff7fa3 0%, #ffb8d6 100%);
+        }
+        .magic-btn:active {
+            transform: translateY(-2px);
+        }
+        .secret-note {
+            display: none;
+            margin-top: 30px;
+            padding: 35px 40px;
+            border-radius: 26px;
+            background: linear-gradient(135deg, #fff9fb 0%, #ffe8f0 100%);
+            border: 2px solid var(--accent);
+            color: #564a6f;
+            line-height: 1.9;
+            box-shadow: 0 15px 40px rgba(255, 143, 171, 0.2);
+            font-size: 1.05rem;
+        }
+        .secret-note p {
+            margin: 15px 0;
+        }
+        .secret-note p:first-child {
+            font-size: 1.15rem;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .playlist-section {
+            padding: 60px 30px;
+            max-width: 1100px;
+            margin: 50px auto;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 250, 252, 0.98));
+            border-radius: 32px;
+            box-shadow: 0 20px 50px rgba(255, 143, 171, 0.15);
+            border: 1px solid rgba(255, 200, 220, 0.4);
+        }
+        .playlist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 28px;
+        }
+        .music-card {
+            background: white;
+            padding: 24px;
+            border-radius: 24px;
+            box-shadow: 0 12px 35px rgba(255, 143, 171, 0.15);
+            border: 2px solid rgba(255, 200, 220, 0.3);
+            transition: 0.3s all ease;
+            text-align: center;
+        }
+        .music-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 18px 45px rgba(255, 143, 171, 0.3);
+            border-color: rgba(255, 143, 171, 0.6);
+        }
+        .music-icon {
+            font-size: 3.5rem;
+            margin-bottom: 16px;
+            display: inline-block;
+            filter: drop-shadow(0 8px 16px rgba(255, 143, 171, 0.2));
+        }
+        .music-card h4 {
+            margin: 0 0 12px 0;
+            color: var(--accent);
+            font-size: 1.15rem;
+        }
+        .music-card p {
+            margin: 0 0 18px 0;
+            color: #7a7a8f;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        .play-btn {
+            background: linear-gradient(135deg, var(--accent), #ffb3d6);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 12px 25px rgba(255, 143, 171, 0.25);
+        }
+        .play-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 16px 35px rgba(255, 143, 171, 0.35);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="music-player">
+        <div class="music-info">
+            <img id="disc" src="https://cdn-icons-png.flaticon.com/512/3659/3659784.png" alt="disc">
+        </div>
+        <select id="songSelect" onchange="changeSong()">
+            <option value="YTSave_YouTube_Lac-Vao-Trong-Mo-SimonC-x-WUY-x-Zeaplee-_Media_K5zY3Ly_W3E_009_128k.mp3">🎵 Lạc Vào Trong Mơ</option>
+            <option value="YTSave_YouTube_NGUOI-XOA-DIU-An-ngo-X-Boum-OFFICIAL-MV_Media_m0WRscOG9oU_009_128k.mp3">🎵 Người Xoa Dịu</option>
+            <option value="YTSave_YouTube_Simp-Gai-808-Low-G-Rap-Nha-Lam_Media_6aBnhxRvmok_009_128k.mp3">🎵 Simp Gái 808</option>
+            <option value="YTSave_YouTube_Gui-Vo-Tuong-Lai-KayDee-ft-Long-Non-La-x_Media_WuHhk2XL-rk_009_128k.mp3">🎵 Gửi Vợ Tương Lai</option>
+            <option value="YTSave_YouTube_MONO-Cham-Hoa-Official-Music-Video_Media_WCm2elbTEZQ_009_128k.mp3">🎵 Chăm Hoa</option>
+        </select>
+        <div class="music-controls">
+            <button class="music-button" id="playBtn" onclick="toggleMusic()">▶ Phát</button>
+            <button class="music-button" id="loopBtn" onclick="toggleLoop()">🔁 Lặp</button>
+        </div>
+        <audio id="myAudio" loop>
+            <source id="audioSource" src="YTSave_YouTube_Lac-Vao-Trong-Mo-SimonC-x-WUY-x-Zeaplee-_Media_K5zY3Ly_W3E_009_128k.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <section class="hero">
+        <img src="tải xuống (1).jfif" class="main-photo" alt="ng đẹp">
+        <h1>Happy Birthday, Phương Mai</h1>
+        <p class="subline">Chúc em một ngày sinh nhật ngọt như kẹo, xinh như hoa và nhiều niềm vui.</p>
+        <p class="subline">Kéo xuống để xem ảnh đẹp và mở quà bất ngờ.</p>
+    </section>
+
+    <section class="section">
+        <h2 class="section-title">Khoảnh khắc xinh đẹp</h2>
+        <div class="gallery">
+            <div class="gallery-item">
+                <img src="123.jfif" alt="pic1">
+                <p>Uầy xinh vl ❤️</p>
+            </div>
+            <div class="gallery-item">
+                <img src="234.jfif" alt="pic2">
+                <p>Á =)))) tư niễn</p>
+            </div>
+            <div class="gallery-item">
+                <img src="456.jfif" alt="pic3">
+                <p>absolute đẹp</p>
+            </div>
+            <div class="gallery-item">
+                <img src="789.jfif" alt="pic4">
+                <p>đẹp vi ci eo</p>
+            </div>
+        </div>
+        <!-- <p style="text-align:center; margin-top: 26px; color:#7a6f8f;">Thay ảnh ở đây bằng ảnh xinh đẹp của cậu để trang trở nên đặc biệt hơn.</p> -->
+    </section>
+
+    <!-- <section class="section">
+        <h2 class="section-title">Dòng thời gian đáng nhớ</h2>
+        <div class="timeline">
+            <div class="timeline-item left">
+                <h4>Ngày đầu quen nhau</h4>
+                <p>Chỉ là một tin nhắn vô tình nhưng lại bắt đầu một hành trình đặc biệt.</p>
+            </div>
+            <div class="timeline-item right">
+                <h4>Những buổi trò chuyện khuya</h4>
+                <p>Mỗi câu chuyện của em đều khiến tớ thấy ấm áp và muốn gần bên hơn.</p>
+            </div>
+            <div class="timeline-item left">
+                <h4>Bánh sinh nhật cùng nhau</h4>
+                <p>Hy vọng năm nay tớ sẽ cùng em thổi nến và cười thật nhiều.</p>
+            </div>
+            <div class="timeline-item right">
+                <h4>Tương lai phía trước</h4>
+                <p>Tớ mong còn được cùng em xây thêm nhiều chuyện vui hơn nữa.</p>
+            </div>
+        </div>
+    </section> -->
+
+    <section class="section">
+        <h2 class="section-title">Quà bất ngờ =))) </h2>
+        <div class="gift-container">
+            <div class="box" id="giftBox" onclick="openGift()">🎁</div>
+            <div class="gift-msg" id="giftMsg">
+                <h3>Chúc mừng e đã nhận đc: 🎉</h3>
+                <p>=)) hong bt tặng cái gì nên là tặng e 3 câu chúc</p>
+                <ul>
+                    <li>🍰 Chúc e lun xinh đẹp như tiên nữ nhé=)))</li>
+                    <li>🎬 Chúc e lun có một skhoe thật dồi dào</li>
+                    <li>💌 Chúc e lun học tập thật tốt</li>
+                </ul>
+                <p>=)))) chẳng bt chúc gì</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2 class="section-title">Tin nhắn nhỏ</h2>
+        <div style="text-align:center;">
+            <button class="magic-btn" onclick="revealLetter()">Mở lời chúc bí mật</button>
+            <div class="secret-note" id="secretNote">
+                <!-- <p>Em à,</p> -->
+                <p>Chúc e sinh nhật vui vẻ, chúc mừng năm mới, nhiệt liệt chào mừng đổi mới lần thứ 15=))</p>
+                <p>"Viettel kính chúc Quý khách một ngày sinh nhật ngập tràn niềm vui và hạnh phúc bên gia đình cùng người thân. Trân trọng cảm ơn Quý khách đã yêu mến và đồng hành cùng Viettel</p>
+                <p>—một anh nào đó-</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="playlist-section">
+        <h2 class="section-title">🎶 Danh Sách Nhạc Yêu Thích Của A=)))</h2>
+        <div class="playlist-grid">
+            <div class="music-card">
+                <div class="music-icon">🎧</div>
+                <h4>Lạc Vào Trong Mơ</h4>
+                <p>Simon C x WUY x Zeaplee</p>
+                <button class="play-btn" onclick="playSongByName('YTSave_YouTube_Lac-Vao-Trong-Mo-SimonC-x-WUY-x-Zeaplee-_Media_K5zY3Ly_W3E_009_128k.mp3')">▶ Phát</button>
+            </div>
+            <div class="music-card">
+                <div class="music-icon">🎸</div>
+                <h4>Người Xoa Dịu Đây</h4>
+                <p>An ngo x Boum</p>
+                <button class="play-btn" onclick="playSongByName('YTSave_YouTube_NGUOI-XOA-DIU-An-ngo-X-Boum-OFFICIAL-MV_Media_m0WRscOG9oU_009_128k.mp3')">▶ Phát</button>
+            </div>
+            <div class="music-card">
+                <div class="music-icon">🎤</div>
+                <h4>Simp Gái 808</h4>
+                <p>G-Rap Nha & Lowg</p>
+                <button class="play-btn" onclick="playSongByName('YTSave_YouTube_Simp-Gai-808-Low-G-Rap-Nha-Lam_Media_6aBnhxRvmok_009_128k.mp3')">▶ Phát</button>
+            </div>
+            <div class="music-card">
+                <div class="music-icon">🎹</div>
+                <h4>Gửi Vợ Tương Lai</h4>
+                <p>KayDee ft Long Non La</p>
+                <button class="play-btn" onclick="playSongByName('YTSave_YouTube_Gui-Vo-Tuong-Lai-KayDee-ft-Long-Non-La-x_Media_WuHhk2XL-rk_009_128k.mp3')">▶ Phát</button>
+            </div>
+            <div class="music-card">
+                <div class="music-icon">🎺</div>
+                <h4>Chăm Hoa</h4>
+                <p>MONO – Official Music Video</p>
+                <button class="play-btn" onclick="playSongByName('YTSave_YouTube_MONO-Cham-Hoa-Official-Music-Video_Media_WCm2elbTEZQ_009_128k.mp3')">▶ Phát</button>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        Dành riêng cho bé Mai | 2026 <br>
+        Made with ❤️ by Thiên=))
+    </footer>
+
+    <script>
+        const audio = document.getElementById('myAudio');
+        const playBtn = document.getElementById('playBtn');
+        const loopBtn = document.getElementById('loopBtn');
+        const songSelect = document.getElementById('songSelect');
+
+        function toggleMusic() {
+            if (audio.paused) {
+                audio.play();
+                playBtn.textContent = '⏸ Dừng';
+                document.getElementById('disc').style.animationPlayState = 'running';
+            } else {
+                audio.pause();
+                playBtn.textContent = '▶ Phát';
+                document.getElementById('disc').style.animationPlayState = 'paused';
+            }
+        }
+
+        function toggleLoop() {
+            audio.loop = !audio.loop;
+            loopBtn.textContent = audio.loop ? '🔁 Lặp lại' : '🔂 1 lần';
+        }
+
+        function changeSong() {
+            audio.src = songSelect.value;
+            audio.load();
+            if (!audio.paused) {
+                audio.play();
+            }
+        }
+
+        function playSongByName(songName) {
+            audio.src = songName;
+            audio.load();
+            audio.play();
+            playBtn.textContent = '⏸ Dừng';
+            document.getElementById('disc').style.animationPlayState = 'running';
+            songSelect.value = songName;
+        }
+
+        function openGift() {
+            document.getElementById('giftMsg').style.display = 'block';
+            document.getElementById('giftBox').innerHTML = '💝';
+            for (let i = 0; i < 18; i++) createHeart();
+        }
+
+        function revealLetter() {
+            const note = document.getElementById('secretNote');
+            note.style.display = note.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.textContent = '❤️';
+            heart.style.position = 'fixed';
+            heart.style.left = Math.random() * 90 + 'vw';
+            heart.style.bottom = '0';
+            heart.style.fontSize = Math.random() * 22 + 18 + 'px';
+            heart.style.opacity = '1';
+            heart.style.zIndex = '9999';
+            heart.style.pointerEvents = 'none';
+            heart.style.transition = '2.5s ease-out';
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.style.transform = `translateY(-110vh) rotate(${Math.random() * 360}deg)`;
+                heart.style.opacity = '0';
+            }, 80);
+
+            setTimeout(() => heart.remove(), 2600);
+        }
+    </script>
+</body>
+</html>
